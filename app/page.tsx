@@ -7,7 +7,14 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const patients = [
+type Patient = {
+  name: string;
+  age: number;
+  gender: string;
+  status: string;
+};
+
+const patients: Patient[] = [
   { name: "Sarah Johnson", age: 34, gender: "Femenino", status: "Pendiente" },
   { name: "Michael Chen", age: 42, gender: "Masculino", status: "Consultado" },
   { name: "Emily Rodriguez", age: 28, gender: "Femenino", status: "Pendiente" },
@@ -15,8 +22,8 @@ const patients = [
 ];
 
 export default function Dashboard() {
-  const router = useRouter(); // ✅ CORREGIDO
-  const [selected, setSelected] = useState(patients[0]);
+  const router = useRouter();
+  const [selected, setSelected] = useState<Patient>(patients[0]);
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -27,7 +34,6 @@ export default function Dashboard() {
         </div>
         <div className="bg-green-100 p-3 rounded-lg">👤</div>
 
-        {/* ✅ BOTÓN FUNCIONAL */}
         <div
           onClick={() => router.push("/carousel")}
           className="p-3 cursor-pointer hover:bg-green-100 rounded-lg transition"
@@ -36,7 +42,7 @@ export default function Dashboard() {
         </div>
 
         <div
-          onClick={() => router.push('/analisis')}
+          onClick={() => router.push("/analisis")}
           className="p-3 cursor-pointer hover:bg-green-100 rounded-lg transition"
         >
           📊
@@ -110,7 +116,8 @@ export default function Dashboard() {
   );
 }
 
-function Card({ title, value }) {
+// ✅ COMPONENTE CARD TIPADO
+function Card({ title, value }: { title: string; value: string }) {
   return (
     <motion.div whileHover={{ scale: 1.02 }} className="bg-white p-4 rounded-xl shadow">
       <p className="text-gray-500 text-sm">{title}</p>
@@ -119,7 +126,8 @@ function Card({ title, value }) {
   );
 }
 
-function Insight({ title, text }) {
+// ✅ COMPONENTE INSIGHT TIPADO
+function Insight({ title, text }: { title: string; text: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -131,6 +139,3 @@ function Insight({ title, text }) {
     </motion.div>
   );
 }
-
-
-
