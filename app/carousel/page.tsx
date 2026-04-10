@@ -1,6 +1,3 @@
-// =========================
-// app/carousel/page.tsx (PRO FINAL)
-// =========================
 'use client'
 
 import { useState, useCallback } from 'react'
@@ -32,12 +29,12 @@ export default function CarouselManager() {
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
-    handleFiles(Array.from(e.target.files) as File[])
+    handleFiles(Array.from(e.target.files))
   }
 
   const onDrop = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault()
-    const dropped = Array.from(e.dataTransfer.files) as File[]
+    const dropped = Array.from(e.dataTransfer.files)
     handleFiles(dropped)
   }, [files])
 
@@ -62,12 +59,12 @@ export default function CarouselManager() {
 
   return (
     <div className="flex h-screen bg-[#0a0a0a] text-[#ededed]">
-      
+
       {/* Sidebar */}
-      <div className="w-20 bg-[#111] flex flex-col items-center py-4 space-y-6 shadow">
+      <div className="w-20 bg-[#111] flex flex-col items-center py-4 space-y-6 shadow-lg">
         <div
           onClick={() => router.push('/')}
-          className="bg-[#631936] text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold cursor-pointer"
+          className="bg-[#631936] text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold cursor-pointer hover:scale-105 transition"
         >
           M
         </div>
@@ -75,7 +72,7 @@ export default function CarouselManager() {
 
       {/* Main */}
       <div className="flex-1 p-10">
-        
+
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
@@ -121,7 +118,9 @@ export default function CarouselManager() {
             className="hidden"
             onChange={onInputChange}
           />
-          <p className="text-[#b38e44]">Subir imágenes</p>
+          <p className="text-[#b38e44] font-semibold">
+            Subir imágenes
+          </p>
         </motion.label>
 
         {/* Preview */}
@@ -135,26 +134,28 @@ export default function CarouselManager() {
             <Reorder.Item key={i} value={file}>
               <img
                 src={URL.createObjectURL(file)}
-                className="h-40 object-cover rounded-xl border border-[#333]"
+                className="h-40 object-cover rounded-xl border border-[#333] hover:scale-105 transition"
               />
             </Reorder.Item>
           ))}
         </Reorder.Group>
 
         {/* Buttons */}
-        <button
-          onClick={publishCarousel}
-          className="mt-6 bg-[#b38e44] hover:bg-[#8f6f34] text-black px-4 py-2 rounded-lg transition"
-        >
-          Publicar
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={publishCarousel}
+            className="mt-6 bg-[#b38e44] hover:bg-[#8f6f34] text-black px-4 py-2 rounded-lg transition font-semibold"
+          >
+            Publicar
+          </button>
 
-        <button
-          onClick={removeAll}
-          className="mt-2 ml-2 border border-[#631936] px-4 py-2 rounded-lg hover:bg-[#631936] hover:text-white transition"
-        >
-          Limpiar
-        </button>
+          <button
+            onClick={removeAll}
+            className="mt-6 border border-[#631936] px-4 py-2 rounded-lg hover:bg-[#631936] hover:text-white transition"
+          >
+            Limpiar
+          </button>
+        </div>
 
         {/* Info */}
         {files.length > 0 && !error && (
