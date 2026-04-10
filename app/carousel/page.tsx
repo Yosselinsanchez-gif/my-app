@@ -1,5 +1,5 @@
 // =========================
-// app/carousel/page.tsx (CORREGIDO)
+// app/carousel/page.tsx (PRO FINAL)
 // =========================
 'use client'
 
@@ -10,16 +10,13 @@ import { useRouter } from 'next/navigation'
 export default function CarouselManager() {
   const router = useRouter()
 
-  // ✅ TIPADO CORRECTO
   const [files, setFiles] = useState<File[]>([])
   const [error, setError] = useState<string>('')
 
   const MAX_TOTAL_SIZE = 500 * 1024
 
-  // ✅ TIPADO
   const calcTotal = (arr: File[]) => arr.reduce((acc, f) => acc + f.size, 0)
 
-  // ✅ TIPADO
   const handleFiles = (selected: File[]) => {
     const merged = [...files, ...selected]
     const totalSize = calcTotal(merged)
@@ -33,13 +30,11 @@ export default function CarouselManager() {
     setFiles(merged)
   }
 
-  // ✅ TIPADO EVENTO
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     handleFiles(Array.from(e.target.files) as File[])
   }
 
-  // ✅ TIPADO DRAG EVENT
   const onDrop = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault()
     const dropped = Array.from(e.dataTransfer.files) as File[]
@@ -66,12 +61,13 @@ export default function CarouselManager() {
   const totalSize = calcTotal(files)
 
   return (
-    <div className="flex h-screen bg-[#f6f7fb]">
+    <div className="flex h-screen bg-[#0a0a0a] text-[#ededed]">
+      
       {/* Sidebar */}
-      <div className="w-20 bg-white flex flex-col items-center py-4 space-y-6 shadow-sm">
+      <div className="w-20 bg-[#111] flex flex-col items-center py-4 space-y-6 shadow">
         <div
           onClick={() => router.push('/')}
-          className="bg-green-500 text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold cursor-pointer"
+          className="bg-[#631936] text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold cursor-pointer"
         >
           M
         </div>
@@ -79,22 +75,27 @@ export default function CarouselManager() {
 
       {/* Main */}
       <div className="flex-1 p-10">
+        
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
+
             <motion.button
               whileHover={{ scale: 1.05, x: -3 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => router.push('/')}
-              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-xl shadow-lg"
+              className="flex items-center gap-2 bg-[#631936] hover:bg-[#4a1227] text-white px-4 py-2 rounded-xl shadow-lg transition"
             >
               ⬅ Regresar
             </motion.button>
 
             <div>
-              <h1 className="text-2xl font-bold">Gestor de Carrusel</h1>
-              <p className="text-gray-500 text-sm">
-                Sube, organiza y publica imágenes
+              <h1 className="text-2xl font-bold text-[#b38e44]">
+                Gestión de Imágenes Médicas
+              </h1>
+
+              <p className="text-gray-400 text-sm">
+                Sube, organiza y publica imágenes clínicas
               </p>
             </div>
           </div>
@@ -102,7 +103,7 @@ export default function CarouselManager() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white px-4 py-2 rounded-xl shadow text-sm text-gray-500"
+            className="bg-[#111] px-4 py-2 rounded-xl shadow text-sm text-gray-400 border border-[#333]"
           >
             {files.length} archivos cargados
           </motion.div>
@@ -112,7 +113,7 @@ export default function CarouselManager() {
         <motion.label
           onDrop={onDrop}
           onDragOver={(e) => e.preventDefault()}
-          className="border-2 border-dashed rounded-2xl p-12 flex flex-col items-center cursor-pointer bg-white"
+          className="border-2 border-dashed border-[#631936] rounded-2xl p-12 flex flex-col items-center cursor-pointer bg-[#111] hover:bg-[#1a1a1a] transition"
         >
           <input
             type="file"
@@ -120,7 +121,7 @@ export default function CarouselManager() {
             className="hidden"
             onChange={onInputChange}
           />
-          <p>Subir imágenes</p>
+          <p className="text-[#b38e44]">Subir imágenes</p>
         </motion.label>
 
         {/* Preview */}
@@ -134,7 +135,7 @@ export default function CarouselManager() {
             <Reorder.Item key={i} value={file}>
               <img
                 src={URL.createObjectURL(file)}
-                className="h-40 object-cover rounded-xl"
+                className="h-40 object-cover rounded-xl border border-[#333]"
               />
             </Reorder.Item>
           ))}
@@ -143,14 +144,14 @@ export default function CarouselManager() {
         {/* Buttons */}
         <button
           onClick={publishCarousel}
-          className="mt-6 bg-green-500 text-white px-4 py-2 rounded-lg"
+          className="mt-6 bg-[#b38e44] hover:bg-[#8f6f34] text-black px-4 py-2 rounded-lg transition"
         >
           Publicar
         </button>
 
         <button
           onClick={removeAll}
-          className="mt-2 ml-2 border px-4 py-2 rounded-lg"
+          className="mt-2 ml-2 border border-[#631936] px-4 py-2 rounded-lg hover:bg-[#631936] hover:text-white transition"
         >
           Limpiar
         </button>
